@@ -6,7 +6,7 @@ A small, text-backed reminder service to remind you to eat and sleep.
 
 ### Frontend
 
-React?
+React? i guess
 
 ### Backend
 
