@@ -16,7 +16,7 @@ I'm going to cheat on AA (as usual for side projects at this scale) and use a co
 
 #### Database
 
-We're gonna use [tiedot](https://github.com/HouzuoGuo/tiedot) which is a document database written in Go. All the data is persisted as plain text on the filesystem. It also supports an HTTP(S) API for querying and mutating data. 
+We're gonna use something that writes data to the disk in plain text. Right now I'm liking [diskv](https://github.com/peterbourgon/diskv).
 
 #### API
 
