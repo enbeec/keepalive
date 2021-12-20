@@ -15,14 +15,18 @@ func fullPath(key string) string {
 	return dbBasePath + "/" + key
 }
 
+type Connection struct {
+	diskv *diskv.Diskv
+}
+
 func Connect(basePath string) *diskv.Diskv {
 	dbBasePath = basePath
-	d := diskv.New(diskv.Options{
+	dv := diskv.New(diskv.Options{
 		BasePath:          basePath,
 		AdvancedTransform: keepaliveTransform,
 		InverseTransform:  keepaliveTransformInverse,
 		CacheSizeMax:      1024 * 1024,
 	})
 
-	return d
+	return Connection{diskv: dv}
 }

@@ -5,10 +5,9 @@ import (
 	"os"
 
 	"github.com/enbeec/keepalive/keepalive-api/db"
-	"github.com/peterbourgon/diskv/v3"
 )
 
-var d *diskv.Diskv = nil
+var d db.Connection = nil
 
 func init() {
 	var dbPath string
