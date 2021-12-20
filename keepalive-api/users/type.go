@@ -10,7 +10,7 @@ type User struct {
 	Username string           `json:"username"`
 	FullName string           `json:"fullname"`
 	Token    string           `json:"-"`
-	Tasks    todotxt.TaskList `json:"tasks,omitempty"`
+	Tasks    todotxt.TaskList `json:"tasks,omitempty"` // see https://pkg.go.dev/github.com/1set/todotxt#TaskList
 }
 
 // dbUser is a struct that defines a user's
