@@ -16,8 +16,10 @@ I'm going to cheat on AA (as usual for side projects at this scale) and use a co
 
 #### Database
 
-We're gonna use something that writes data to the disk in plain text. Right now I'm liking [diskv](https://github.com/peterbourgon/diskv).
+We're going to use [github.com/peterbourgon/diskv/v3](https://github.com/peterbourgon/diskv) for it's good performance and plaintext persistance. This is a little unconventional but we'll also be using the well known [todo.txt](http://todotxt.org/) format (via [github.com/1set/todotxt](https://github.com/1set/todotxt) for storing todo lists.
+
+
 
 #### API
 
-Golang, maybe Gin. 
+We'll be building the API in [github.com/gin-gonic/gin](https://github.com/gin-gonic/gin).
