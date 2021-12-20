@@ -1,4 +1,4 @@
-module github.com/enbeec/keepalive-api
+module github.com/enbeec/keepalive/keepalive-api
 
 go 1.17
 

@@ -4,22 +4,23 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/enbeec/keepalive/keepalive-api/db"
 	"github.com/peterbourgon/diskv/v3"
 )
 
-var db *diskv.Diskv = nil
+var d *diskv.Diskv = nil
 
 func init() {
 	var dbPath string
 
-	home = os.Getenv("HOME")
+	home := os.Getenv("HOME")
 	dbPath = home + "/keepalive-data"
 
-	db = InitDB(dbPath)
+	d = db.Connect(dbPath)
 }
 
 func main() {
-	if db != nil {
+	if d != nil {
 		fmt.Println("Database is connected.")
 	}
 }
