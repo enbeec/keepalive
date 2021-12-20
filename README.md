@@ -20,4 +20,4 @@ We're gonna use something that writes data to the disk in plain text. Right now 
 
 #### API
 
-Golang, maybe Gin. Using tiedot as the database means when you're running the API and database locally you can directly query it with `fetch` as an escape hatch.
+Golang, maybe Gin. 
