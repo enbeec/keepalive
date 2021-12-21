@@ -11,14 +11,14 @@ const USER_EXT_LEN = len(USER_EXT)
 const TODO_EXT = ".txt"
 const TODO_EXT_LEN = len(TODO_EXT)
 
-func keepaliveTransform(key string) *diskv.PathKey {
+func KeepaliveTransform(key string) *diskv.PathKey {
 	path := strings.Split(key, "/")
 
 	// initial checks
 	if len(path) == 0 {
 		panic("can't write to empty path")
 	} else if path[0] != "keepalive" {
-		panic("Can't use unrelated path: " + fullPath(key))
+		panic("Can't use unrelated path: " + key)
 	}
 
 	last := len(path) - 1
@@ -40,10 +40,10 @@ func keepaliveTransform(key string) *diskv.PathKey {
 	}
 }
 
-func keepaliveTransformInverse(pathKey *diskv.PathKey) (key string) {
+func KeepaliveTransformInverse(pathKey *diskv.PathKey) (key string) {
 	// initial checks
 	if pathKey.Path[0] != "keepalive" {
-		panic("Can't use unrelated path: " + fullPath(key))
+		panic("Can't use unrelated path: " + key)
 	}
 
 	last := len(pathKey.Path)
@@ -59,5 +59,5 @@ func keepaliveTransformInverse(pathKey *diskv.PathKey) (key string) {
 		fileNameLength = len(pathKey.FileName) - TODO_EXT_LEN
 	}
 
-	return strings.Join(pathKey.Path, "/") + pathKey.FileName[:fileNameLength]
+	return strings.Join(pathKey.Path, "/") + "/" + pathKey.FileName[:fileNameLength]
 }

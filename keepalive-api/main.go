@@ -7,7 +7,7 @@ import (
 	"github.com/enbeec/keepalive/keepalive-api/db"
 )
 
-var d db.Connection = nil
+var d *db.Connection = nil
 
 func init() {
 	var dbPath string

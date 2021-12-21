@@ -19,14 +19,14 @@ type Connection struct {
 	diskv *diskv.Diskv
 }
 
-func Connect(basePath string) *diskv.Diskv {
+func Connect(basePath string) *Connection {
 	dbBasePath = basePath
 	dv := diskv.New(diskv.Options{
 		BasePath:          basePath,
-		AdvancedTransform: keepaliveTransform,
-		InverseTransform:  keepaliveTransformInverse,
+		AdvancedTransform: KeepaliveTransform,
+		InverseTransform:  KeepaliveTransformInverse,
 		CacheSizeMax:      1024 * 1024,
 	})
 
-	return Connection{diskv: dv}
+	return &Connection{diskv: dv}
 }
