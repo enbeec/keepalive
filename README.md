@@ -18,7 +18,7 @@ I'm going to cheat on AA (as usual for side projects at this scale) and use a co
 
 We're going to use [github.com/peterbourgon/diskv/v3](https://github.com/peterbourgon/diskv) for it's good performance and plaintext persistance. This is a little unconventional but we'll also be using the well known [todo.txt](http://todotxt.org/) format (via [github.com/1set/todotxt](https://github.com/1set/todotxt) for storing todo lists.
 
-
+To see how the data breaks down refer to `keepalive-api/users/type.go` and [the Task type from `todotxt`](https://pkg.go.dev/github.com/1set/todotxt#Task)
 
 #### API
 
