@@ -44,10 +44,10 @@ func TestKeepaliveTransform(t *testing.T) {
 			// subtest function
 			func(t *testing.T) {
 				gotPathKey := KeepaliveTransform(testCase.StringPath)
-				if reflect.DeepEqual(gotPathKey, testCase.PathKey) ==
-					testCase.ShouldFail {
-					t.Logf("%s => %s", testCase.StringPath, PathKeyToString(gotPathKey))
-					t.Fail()
+				if reflect.DeepEqual(
+					gotPathKey, testCase.PathKey) == testCase.ShouldFail {
+					t.Fatalf("%s => %s",
+						testCase.StringPath, PathKeyToString(gotPathKey))
 				}
 			},
 		)
@@ -62,10 +62,10 @@ func TestKeepaliveTransformInverse(t *testing.T) {
 			// subtest function
 			func(t *testing.T) {
 				gotStringPath := KeepaliveTransformInverse(testCase.PathKey)
-				if reflect.DeepEqual(gotStringPath, testCase.StringPath) ==
-					testCase.ShouldFail {
-					t.Logf("%s <= %s", gotStringPath, PathKeyToString(testCase.PathKey))
-					t.Fail()
+				if reflect.DeepEqual(
+					gotStringPath, testCase.StringPath) == testCase.ShouldFail {
+					t.Fatalf("%s <= %s",
+						gotStringPath, PathKeyToString(testCase.PathKey))
 				}
 			},
 		)
