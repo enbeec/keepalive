@@ -6,13 +6,14 @@ import (
 
 var dbBasePath string
 
-const ERR_DBNOINIT = "Database is not initialized!"
-
 func fullPath(key string) string {
+	var prefix string
 	if dbBasePath == "" {
-		panic(ERR_DBNOINIT)
+		prefix = "UNKNOWN_ROOT"
+	} else {
+		prefix = dbBasePath
 	}
-	return dbBasePath + "/" + key
+	return prefix + "/" + key
 }
 
 type Connection struct {
