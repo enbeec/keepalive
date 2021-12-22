@@ -24,13 +24,14 @@ func Connect(basePath string) *Connection {
 
 /*
  * TODO:
- * 		test that a method on a connection can recover from a panic
+ *		try recovering from a panic occuring in a transform function
  *		and return an appropriate error. If that works, all methods*
  *		must implement a deferred recovery that propogrates an error.
  *
  *		* it is okay to omit the error if the method does not invoke
  *			a transform or it's inverse AND does not have another
  *			error to propogate up to the method caller.
+ *
  */
 
 func (c *Connection) ReadTodos(username string) (todotxt.TaskList, error) {
