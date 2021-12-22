@@ -1,8 +1,7 @@
 package db
 
 import (
-	"bufio"
-	"strings"
+	"os"
 
 	"github.com/1set/todotxt"
 	"github.com/peterbourgon/diskv/v3"
@@ -35,17 +34,17 @@ func Connect(basePath string) *Connection {
  */
 
 func (c *Connection) ReadTodos(username string) (todotxt.TaskList, error) {
-	allTasks := c.diskv.ReadString("keepalive/todos/" + username + "/todo")
-	taskScanner := bufio.NewScanner(strings.NewReader(allTasks))
+	allTasks, err := c.diskv.ReadStream("keepalive/todos/"+username+"/todo", false)
+	defer allTasks.Close()
+	if err != nil {
+		return nil, err
+	}
 
 	todoList := todotxt.NewTaskList()
-
-	for taskScanner.Scan() {
-		task, err := todotxt.ParseTask(taskScanner.Text())
-		if err != nil {
-			return nil, err
-		}
-		todoList.AddTask(task)
+	// LoadFromFile converts the "file" to a bufio.Scanner so any io.Reader is fine
+	err = todoList.LoadFromFile(allTasks.(*os.File))
+	if err != nil {
+		return nil, err
 	}
 
 	return todoList, nil
