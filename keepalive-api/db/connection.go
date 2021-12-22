@@ -9,7 +9,6 @@ type Connection struct {
 }
 
 func Connect(basePath string) *Connection {
-	dbBasePath = basePath
 	dv := diskv.New(diskv.Options{
 		BasePath:          basePath,
 		AdvancedTransform: KeepaliveTransform,
