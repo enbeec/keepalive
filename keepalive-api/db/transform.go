@@ -16,10 +16,8 @@ func KeepaliveTransform(key string) *diskv.PathKey {
 
 	// initial checks
 	if len(path) == 0 {
-		// TODO: set up an error channel in the Connection and don't use panic
 		panic("can't write to empty path")
 	} else if path[0] != "keepalive" {
-		// TODO... this allows the user of a Connection to decide when to panic
 		panic("Can't use unrelated path: " + key)
 	}
 
@@ -45,7 +43,6 @@ func KeepaliveTransform(key string) *diskv.PathKey {
 func KeepaliveTransformInverse(pathKey *diskv.PathKey) (key string) {
 	// initial checks
 	if pathKey.Path[0] != "keepalive" {
-		// TODO... see above
 		panic("Can't use unrelated path: " + key)
 	}
 
