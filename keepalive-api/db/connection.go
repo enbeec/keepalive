@@ -51,12 +51,9 @@ func (c *Connection) ReadTodos(username string) (todotxt.TaskList, error) {
 }
 
 func (c *Connection) WriteTodos(username string, todoList todotxt.TaskList) error {
-	err := c.diskv.WriteString(
-		"keepalive/todos/"+username+"/todo",
-		todoList.String(),
-	)
-
-	if err != nil {
+	if err := c.diskv.WriteString(
+		"keepalive/todos/"+username+"/todo", todoList.String(),
+	); err != nil {
 		return err
 	}
 
