@@ -4,18 +4,6 @@ import (
 	"github.com/peterbourgon/diskv/v3"
 )
 
-var dbBasePath string
-
-func fullPath(key string) string {
-	var prefix string
-	if dbBasePath == "" {
-		prefix = "UNKNOWN_ROOT"
-	} else {
-		prefix = dbBasePath
-	}
-	return prefix + "/" + key
-}
-
 type Connection struct {
 	diskv *diskv.Diskv
 }
