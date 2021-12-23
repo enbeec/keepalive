@@ -30,6 +30,9 @@ func (c *Connection) WriteTodos(username string, todoList todotxt.TaskList) erro
 	return c.writeTodosDiskv(username, todoList)
 }
 
+// TODO: ReadUser
+// TODO: WriteUser
+
 /* TODO: ====================== diskv specific  =====================\
  * |	try recovering from a panic occuring in a transform function |
  * |	and return an appropriate error. If that works, all methods* |
