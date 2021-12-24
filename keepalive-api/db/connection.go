@@ -46,7 +46,7 @@ func (c *Connection) WriteTodos(username string, todoList todotxt.TaskList) erro
 
 func (c *Connection) readTodosDiskv(username string) (todotxt.TaskList, error) {
 	allTasks, err := c.diskv.ReadStream("keepalive/todos/"+username+"/todo", false)
-	defer allTasks.Close() // ReadStream returns a ReadCloser (has .Read() and .Close())
+	defer allTasks.Close()
 	if err != nil {
 		return nil, err
 	}
@@ -65,6 +65,35 @@ func (c *Connection) readTodosDiskv(username string) (todotxt.TaskList, error) {
 func (c *Connection) writeTodosDiskv(username string, todoList todotxt.TaskList) error {
 	if err := c.diskv.WriteString(
 		"keepalive/todos/"+username+"/todo", todoList.String(),
+	); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (c *Connection) readUserDiskv(username string) (*User, error) {
+	jsonUser, err := c.diskv.ReadStream("keepalive/users/"+username, false)
+	if err != nil {
+		return nil, err
+	}
+
+	user, err := NewUserFromJSON(jsonUser)
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}
+
+func (c *Connection) writeUserDiskv(user *User) error {
+	userJSON, err := user.json()
+	if err != nil {
+		return err
+	}
+
+	if err := c.diskv.WriteString(
+		"keepalive/users/"+user.Username, userJSON,
 	); err != nil {
 		return err
 	}
