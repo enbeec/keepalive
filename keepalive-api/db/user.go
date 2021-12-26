@@ -3,6 +3,7 @@ package db
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 )
 
 // User contains the name and username of a user
@@ -31,7 +32,15 @@ func NewUserFromJSON(fromJSON interface{}) (*User, error) {
 		FamilyName: "",
 	}
 
-	if j, isString := fromJSON.(string); isString {
+	if j, isReader := fromJSON.(io.Reader); isReader {
+		jsonBytes, err := io.ReadAll(j)
+		if err != nil {
+			return nil, err
+		}
+		if err := json.Unmarshal(jsonBytes, user); err != nil {
+			return nil, err
+		}
+	} else if j, isString := fromJSON.(string); isString {
 		if err := json.Unmarshal([]byte(j), user); err != nil {
 			return nil, err
 		}
