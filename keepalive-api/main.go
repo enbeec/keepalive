@@ -10,12 +10,12 @@ import (
 var d *db.Connection = nil
 
 func init() {
-	var dbPath string
-
 	home := os.Getenv("HOME")
-	dbPath = home + "/keepalive-data"
+	dbPath := home + "/keepalive-data"
+	tempPath := home + "/keepalive-data__temp"
 
-	d = db.Connect(dbPath)
+	//d = db.Connect(dbPath)
+	d = db.Connect(dbPath, db.TempDir(tempPath))
 }
 
 func main() {
