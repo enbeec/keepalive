@@ -22,6 +22,10 @@ func Connect(basePath string) *Connection {
 	return &Connection{diskv: dv}
 }
 
+// Right now the "general" Read/Write methods wrap diskv-specific operations
+//		because the intention is to expand this backend to other key/value
+//		persistence options like object storage (e.g. S3) etc.
+
 func (c *Connection) ReadTodos(username string) (todotxt.TaskList, error) {
 	return c.readTodosDiskv(username)
 }
@@ -30,8 +34,13 @@ func (c *Connection) WriteTodos(username string, todoList todotxt.TaskList) erro
 	return c.writeTodosDiskv(username, todoList)
 }
 
-// TODO: ReadUser
-// TODO: WriteUser
+func (c *Connection) ReadUser(username string) (*User, error) {
+	return c.readUserDiskv(username)
+}
+
+func (c *Connection) WriteUser(user *User) error {
+	return c.writeUserDiskv(user)
+}
 
 /* TODO: ====================== diskv specific  =====================\
  * |	try recovering from a panic occuring in a transform function |
