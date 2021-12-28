@@ -12,6 +12,9 @@ type API struct {
 	Groups map[string]*gin.RouterGroup
 }
 
+// NewAPI implements the functional config of a router via a wrapper
+//		All RouterGroups are created via config functions. All config
+//		functions take a group basePath as a first parameter.
 func NewAPI(opts ...func(*API)) *API {
 	api := API{
 		Router: gin.New(),
@@ -32,16 +35,13 @@ func NewAPI(opts ...func(*API)) *API {
 }
 
 func (api *API) groupMustExist(group string) {
-	// TODO: if group does not exist, create it
-}
-
-func BasePath(group, path string) func(*API) {
-	return func(api *API) {
-		api.groupMustExist(group)
-		// TODO: set the base path
+	if _, exists := api.Groups[group]; !exists {
+		api.Groups[group] = api.Router.Group(group)
 	}
 }
 
+// AuthzEnforce attaches a casbin Enforcer (via a reference) to a RouterGroup
+//		specified by it's basePath/name
 func AuthzEnforce(group string, enforcer *casbin.Enforcer) func(*API) {
 	return func(api *API) {
 		api.groupMustExist(group)
@@ -49,6 +49,8 @@ func AuthzEnforce(group string, enforcer *casbin.Enforcer) func(*API) {
 	}
 }
 
+// CORS attaches a cors configuration struct to a RouterGroup
+//		specified by it's basePath/name
 func CORS(group string, config cors.Config) func(*API) {
 	return func(api *API) {
 		api.groupMustExist(group)
