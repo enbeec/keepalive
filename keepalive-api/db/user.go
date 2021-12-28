@@ -6,7 +6,7 @@ import (
 	"io"
 )
 
-// User contains the name and username of a user
+// User represents a single user object in the database
 type User struct {
 	Username string `json:"username"`
 
@@ -24,7 +24,15 @@ func NewUser() *User {
 	}
 }
 
-// NewUserFromJSON returns a reference to a blank User
+// NewUserFromJSON returns a reference to a user created from JSON
+//		Inputs must be of string type or satisfy the io.Reader interface
+//
+// Example input:
+//		{
+//			"username": "steve",
+//			"given_name": "steve",
+//			"family_name": "crustman",
+//		}
 func NewUserFromJSON(fromJSON interface{}) (*User, error) {
 	user := &User{
 		Username:   "",

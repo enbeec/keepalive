@@ -15,7 +15,7 @@ func init() {
 	tempPath := home + "/keepalive-data__temp"
 
 	//d = db.Connect(dbPath)
-	d = db.Connect(dbPath, db.TempDir(tempPath))
+	d = db.ConnectDiskv(dbPath, db.TempDir(tempPath))
 }
 
 func main() {
