@@ -7,23 +7,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type GroupConfig struct {
-	CORSConfig cors.Config
-	Enforcer   *casbin.Enforcer
-	BasePath   string
-}
-
 type API struct {
-	Router       *gin.Engine
-	Groups       map[string]*gin.RouterGroup
-	GroupConfigs map[string]GroupConfig
+	Router *gin.Engine
+	Groups map[string]*gin.RouterGroup
 }
 
 func NewAPI(opts ...func(*API)) *API {
 	api := API{
-		Router:       gin.New(),
-		Groups:       make(map[string]*gin.RouterGroup),
-		GroupConfigs: make(map[string]GroupConfig),
+		Router: gin.New(),
+		Groups: make(map[string]*gin.RouterGroup),
 	}
 
 	// TODO: logger
