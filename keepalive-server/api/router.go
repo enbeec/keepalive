@@ -51,7 +51,6 @@ func NewEngine(opts ...func(*config)) (*gin.Engine, map[string]*gin.RouterGroup)
 }
 
 // AuthzEnforce attaches pointer to a casbin Enforcer to a RouterGroup
-//		specified by it's basePath/name
 func AuthzEnforce(group string, enforcer *casbin.Enforcer) func(*config) {
 	return func(c *config) {
 		if group == "engine" {
@@ -64,7 +63,6 @@ func AuthzEnforce(group string, enforcer *casbin.Enforcer) func(*config) {
 }
 
 // CORS attaches a cors configuration struct to a RouterGroup
-//		specified by it's basePath/name
 func CORS(group string, corsConfig cors.Config) func(*config) {
 	return func(c *config) {
 		if group == "engine" {
