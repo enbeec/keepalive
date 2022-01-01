@@ -22,7 +22,12 @@ type config struct {
 // . makes sure that the RouterGroup you're trying to configure exists
 func (c *config) groupMustExist(group string) {
 	if _, exists := c.groups[group]; !exists {
-		c.groups[group] = c.engine.Group(group)
+		if group == "engine" || group == "" {
+			c.groups[group] = c.engine.Group(group)
+		} else {
+			c.groups[group] = c.groups[group].Group(group)
+
+		}
 	}
 }
 
@@ -50,10 +55,18 @@ func NewEngine(opts ...func(*config)) (*gin.Engine, map[string]*gin.RouterGroup)
 	return c.engine, c.groups
 }
 
+// Group creates a new RouterGroup from another group. It is the simplest
+//		example of a configuration function.
+func Group(group string, newGroup string) func(*config) {
+	return func(c *config) {
+		c.groupMustExist(group)
+	}
+}
+
 // AuthzEnforce attaches pointer to a casbin Enforcer to a RouterGroup
 func AuthzEnforce(group string, enforcer *casbin.Enforcer) func(*config) {
 	return func(c *config) {
-		if group == "engine" {
+		if group == "engine" || group == "" {
 			c.engine.Use(authz.NewAuthorizer(enforcer))
 		} else {
 			c.groupMustExist(group)
@@ -65,7 +78,7 @@ func AuthzEnforce(group string, enforcer *casbin.Enforcer) func(*config) {
 // CORS attaches a cors configuration struct to a RouterGroup
 func CORS(group string, corsConfig cors.Config) func(*config) {
 	return func(c *config) {
-		if group == "engine" {
+		if group == "engine" || group == "" {
 			c.engine.Use(cors.New(corsConfig))
 		} else {
 			c.groupMustExist(group)
