@@ -19,6 +19,13 @@ type config struct {
 	engine *gin.Engine
 }
 
+// . makes sure that the RouterGroup you're trying to configure exists
+func (c *config) groupMustExist(group string) {
+	if _, exists := c.groups[group]; !exists {
+		c.groups[group] = c.engine.Group(group)
+	}
+}
+
 // NewEngine implements the functional config of a router via a wrapper
 //		All RouterGroups are created via config functions. All config
 //		functions take a group basePath as a first parameter.
@@ -43,19 +50,16 @@ func NewEngine(opts ...func(*config)) (*gin.Engine, map[string]*gin.RouterGroup)
 	return c.engine, c.groups
 }
 
-// . makes sure that the RouterGroup you're trying to configure exists
-func (c *config) groupMustExist(group string) {
-	if _, exists := c.groups[group]; !exists {
-		c.groups[group] = c.engine.Group(group)
-	}
-}
-
 // AuthzEnforce attaches pointer to a casbin Enforcer to a RouterGroup
 //		specified by it's basePath/name
 func AuthzEnforce(group string, enforcer *casbin.Enforcer) func(*config) {
 	return func(c *config) {
-		c.groupMustExist(group)
-		c.groups[group].Use(authz.NewAuthorizer(enforcer))
+		if group == "engine" {
+			c.engine.Use(authz.NewAuthorizer(enforcer))
+		} else {
+			c.groupMustExist(group)
+			c.groups[group].Use(authz.NewAuthorizer(enforcer))
+		}
 	}
 }
 
@@ -63,7 +67,11 @@ func AuthzEnforce(group string, enforcer *casbin.Enforcer) func(*config) {
 //		specified by it's basePath/name
 func CORS(group string, corsConfig cors.Config) func(*config) {
 	return func(c *config) {
-		c.groupMustExist(group)
-		c.groups[group].Use(cors.New(corsConfig))
+		if group == "engine" {
+			c.engine.Use(cors.New(corsConfig))
+		} else {
+			c.groupMustExist(group)
+			c.groups[group].Use(cors.New(corsConfig))
+		}
 	}
 }

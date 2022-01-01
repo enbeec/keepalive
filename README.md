@@ -10,10 +10,6 @@ React? i guess
 
 ### Backend
 
-#### Gateway
-
-I'm going to cheat on AA (as usual for side projects at this scale) and use a combination of Caddy (a single static webpage and basic auth) for authentication and the simplest possible authorization scheme: non-rotating tokens and no shared data. The API deployment script will expect `caddy` in your path but all the features I'm using are native and stable in the current major version (2) so no need to vendor it in or anything.
-
 #### Database
 
 We're going to use [github.com/peterbourgon/diskv/v3](https://github.com/peterbourgon/diskv) for it's good performance and plaintext persistance. This is a little unconventional but we'll also be using the well known [todo.txt](http://todotxt.org/) format (via [github.com/1set/todotxt](https://github.com/1set/todotxt) for storing todo lists.
@@ -24,4 +20,8 @@ I'm not sure how much I like the current layout where the main user type live in
 
 #### API
 
-We'll be building the API in [github.com/gin-gonic/gin](https://github.com/gin-gonic/gin).
+We'll be building the API in [github.com/gin-gonic/gin](https://github.com/gin-gonic/gin). I've got an `api` package going that wraps the gin Engine (along with it's precious RouterGroups) and provides configuration options for CORS and auth with the [functional configuration](https://sagikazarmark.hu/blog/functional-options-on-steroids/) pattern.
+
+Auth is provided by `github.com/gin-contrib/authz`, which consumes an `Enforcer` from the `github.com/casbin/casbin/v2` package for configuration. The CORS option consumes a `cors.Config` and attaches it to the provided group.
+
+All configuration functions take a string as their first argument that identifies the subgroup you're trying to configure. If the string is "engine", the engine itself is configured. After that initial run of NewEngine(), further configuration can be done via the map of RouterGroup references returned from NewEngine().
