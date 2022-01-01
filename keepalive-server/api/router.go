@@ -15,6 +15,7 @@ import (
 //		configurations outside the module before needing to try to write
 //		a generally useful higher order configuration function.
 type config struct {
+	// TODO: enforce overwriting keys after it is returned
 	groups map[string]*gin.RouterGroup
 	engine *gin.Engine
 }
@@ -26,8 +27,10 @@ func (c *config) groupMustExist(group string) {
 			c.groups[group] = c.engine.Group(group)
 		} else {
 			c.groups[group] = c.groups[group].Group(group)
-
 		}
+	} else {
+		// Configuration time is a better time to panic than most, I find.
+		panic("You may not reuse group names.")
 	}
 }
 
